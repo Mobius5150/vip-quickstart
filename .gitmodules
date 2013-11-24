@@ -19,3 +19,9 @@
 [submodule "puppet/modules/ufw"]
 	path = puppet/modules/ufw
 	url = https://github.com/anl/puppet-ufw
+[submodule "puppet/modules/ssh"]
+	path = puppet/modules/ssh
+	url = https://github.com/spiette/puppet-ssh.git
+[submodule "puppet/modules/concat"]
+	path = puppet/modules/concat
+	url = https://github.com/puppetlabs/puppetlabs-concat.git
