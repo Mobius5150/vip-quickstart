@@ -73,15 +73,30 @@ if ( Get-Command svn -errorAction SilentlyContinue ) {
 	}
 	echo ""
 } else {
-	$username = Read-Host 'Enter your WordPress.com username'
-	$password = Read-Host 'Enter your WordPress.com password' -AsSecureString
+	for ($i=0; -lt 3; $i++) {}
+		$username = Read-Host 'Enter your WordPress.com username'
+		$password = Read-Host 'Enter your WordPress.com password' -AsSecureString
 
-	$env:SVN_USERNAME = $username
-	$env:SVN_PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($password));
+		$env:SVN_USERNAME = $username
+		$env:SVN_PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($password));
 
-	echo ""
+		# Test these credentials -- The try...catch exists to hide the PS error output if the command fails
+		try {
+			$pscreds = New-Object System.Management.Automation.PSCredential ($username, $password)
+			$r = Invoke-WebRequest -Credential $pscreds https://vip-svn.wordpress.com/plugins/
+		} catch {
+		}
+
+		if ( $r.StatusCode -eq 200 ) {
+			break;
+		} else {
+			echo "Login failed. Try again."
+			echo ""
+		}
+	}
 }
 
+echo ""
 
 # =====================================
 # Start the VM (always provision, even if it's already running)
