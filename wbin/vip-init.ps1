@@ -73,7 +73,7 @@ if ( Get-Command svn -errorAction SilentlyContinue ) {
 	}
 	echo ""
 } else {
-	for ($i=0; -lt 3; $i++) {}
+	for ($i=0; -lt 3; $i++) {
 		$username = Read-Host 'Enter your WordPress.com username'
 		$password = Read-Host 'Enter your WordPress.com password' -AsSecureString
 
