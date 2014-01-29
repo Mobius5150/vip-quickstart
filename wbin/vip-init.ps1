@@ -89,6 +89,13 @@ if ( Get-Command svn -errorAction SilentlyContinue ) {
 
 		if ( $r.StatusCode -eq 200 ) {
 			break;
+			
+		} if ( $i -eq 2 ) {
+			echo ""
+			echo "Login Failed. Max Attempts."
+			echo "---------------------------"
+			echo "Looks like you might not have access to our VIP Shared Plugins repo. Just send an email to vip-support@wordpress.com and let us know what project you're working on and we'll set things up for you!"
+				
 		} else {
 			echo "Login failed. Try again."
 			echo ""
