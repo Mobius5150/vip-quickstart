@@ -1,4 +1,4 @@
-$plugins = ['developer', 'jetpack', 'mrss']
+$plugins = ['developer', 'mrss']
 
 # Install WordPress
 exec {"wp install /srv/www/wp":
@@ -15,12 +15,6 @@ wp::plugin { $plugins:
 	location    => '/srv/www/wp',
 	networkwide => true,
 	require => Exec['wp install /srv/www/wp']
-}
-
-# Install default theme
-exec { '/usr/bin/wp theme install twentyfourteen':
-	unless => '/usr/bin/wp theme is-installed twentyfourteen',
-	require => Class['wp::cli'],
 }
 
 # Install VIP recommended developer plugins
@@ -55,8 +49,6 @@ vcsrepo { '/srv/www/wp-content/themes/vip/plugins':
 	ensure   => 'present',
 	source   => 'https://vip-svn.wordpress.com/plugins/',
 	provider => svn,
-	basic_auth_username => $svn_username,
-	basic_auth_password => $svn_password,
 }
 
 vcsrepo { '/srv/www/wp-content/themes/pub':
@@ -69,6 +61,20 @@ vcsrepo { '/srv/www/wp-tests':
 	ensure   => 'present',
 	source   => 'http://develop.svn.wordpress.org/trunk/',
 	provider => svn,
+}
+
+vcsrepo { '/srv/www/wp-content/plugins/jetpack':
+	ensure   => 'present',
+	source   => 'https://github.com/Automattic/jetpack/',
+	provider => git,
+}
+
+# Activate Jetpack
+wp::plugin { 'jetpack':
+    location => '/srv/www/wp',
+    ensure  => 'enabled',
+    networkwide => true,
+    require => vcsrepo['/srv/www/wp-content/plugins/jetpack'],
 }
 
 # Create a local config
