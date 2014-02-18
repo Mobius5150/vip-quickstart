@@ -60,7 +60,7 @@ class PhpInfo extends Dashboard_Plugin {
 				<?php endforeach; ?>
 				<span class="spinner" style="display: inline;"></span>
 			</p>
-			<iframe id="phpinfo-window" src="<?php echo $phpinfo_url; ?>" style="width: 100%; min-height: 300px;" />
+			<iframe id="phpinfo-window" src="<?php echo $phpinfo_url; ?>" style="width: 100%; min-height: 300px;"></iframe>
 			<div class="clear"></div>
         </div>
         <?php
